@@ -5,7 +5,7 @@ $(document).ready(function(){
   // materialize modal functionality
   $('.modal').modal();
 
-  $('.save-article-button').on('click', function() {
+  $(document).on('click', '.save-article-button', function() {
     // grab _id from saved data attribute
     var dbId = $(this).data('dbid');
     // ajax put method to articles/_id
@@ -23,7 +23,8 @@ $(document).ready(function(){
   });
   
   // when delete from saved is clicked, update db to change saved to false
-  $('.delete-from-saved-button').on('click', function() {
+  
+  $(document).on('click', '.delete-from-saved-button', function() {
     var dbId = $(this).data('dbid');
     // ajax put method to articles/_id
     // send data { saved: false } back
@@ -38,7 +39,7 @@ $(document).ready(function(){
   });
 
   // when view comments is clicked, pull in comments from db with ajax get req to articles/_id
-  $('.view-comments-button').on('click', function() {
+  $(document).on('click', '.view-comments-button', function() {
     var dbId = $(this).data('dbid');
     $("#comment-input").val('');
     $.ajax({
@@ -65,7 +66,7 @@ $(document).ready(function(){
   });
 
   // when save comment is clicked, add comment to db
-  $('.save-comment-button').on('click', function() {
+  $(document).on('click', '.save-comment-button', function() {
     var dbId = $(this).data('dbid');
     // grab id from data attr, use ajax post method to send comment from text-input val to the article
     $.ajax({
