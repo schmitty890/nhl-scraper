@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var mongoose = require("mongoose");
 var cheerio = require("cheerio");
-var request = require("request");
+var axios = require("axios");
 
 // require models
 var db = require("./models");
@@ -58,9 +58,10 @@ app.get("/scrape", function(req, res) {
     for (var i = 0; i < currentArticles.length; i++) {
       currentArticleTitles.push(currentArticles[i].title);
     }
-    // then grab html body, load into cheerio
-    request("https://www.nhl.com/news", function(error, response, html) {
-      var $ = cheerio.load(html);
+    
+    // First, we grab the body of the html with request
+    axios.get("https://www.nhl.com/news").then(function(response) {
+      var $ = cheerio.load(response.data);
       // grab every article from html, save title/summary/link/image in a result object if the title doesn't already appear in db
       $("article").each(function(i, element) {
         var result = {};
@@ -93,9 +94,8 @@ app.get("/scrape", function(req, res) {
             });
         }
       });
-      // If we were able to successfully scrape and save articles, redirect home
-      res.redirect("/");
     });
+    res.redirect("/");
   });
 });
 
